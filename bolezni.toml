@@ -31,16 +31,16 @@ ph={min=6, max=7}
 
 
 [GrayRot.info]
-name = 
-agent = 
-description = 
-visual=
+name = "Серая гниль (ботритис)"
+agent = "Botrytis cinerea"
+description = "Развивается при высокой влажности и плотных кистях. Может вызывать благородную гниль при контролируемых условиях (для десертных вин)."
+visual="Серый пушистый налёт на ягодах; сморщивание и загнивание ягод; слипание ягод; бурые пятна на листьях"
 
 [GrayRot.param]
-temp_air = {min = 20,  max=25}
-hum_air = {min=80,max=100}
-ph={min=5.5, max=7}
-time={ min = 5 }
+temp_air = {min = 15,  max=25}
+hum_air = {min=90,max=100}
+ph={min=6, max=7}
+time={ min = 24 }
 
 
 
