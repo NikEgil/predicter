@@ -48,6 +48,14 @@ def restore_series(observed):
             restored.append(best)
     return restored
 
+def remove_duplicates(nested_list):
+    unique_list = []  # Пустой список
+    for element in nested_list:
+        if element not in unique_list:  # Проверяем каждый элемент
+            unique_list.append(element)  # Добавляем, если элемент уникален
+    return unique_list
+
+
 
 def append_data(data: list, meteo_path: str, ugv_path: str):
     while True:
@@ -59,17 +67,19 @@ def append_data(data: list, meteo_path: str, ugv_path: str):
             time.sleep(1)
     m_new = 0
     u_new = 0
+    print("всего: ",len(data))
+    data=remove_duplicates(data)
+    print("осталось: ",len(data))
     try:
         for i in range(len(data)):
             if data[i]["sens"]["id_s"] == "1" or data[i]["sens"]["id_s"] == "11":
                 try:
-                    print(data[i])
                     if "port_1" in data[i]:
                         t = []
                         h = []
                         for j in range(5):
-                            t.append(data[i]["port_1"][j]["temperature"])
-                            h.append(data[i]["port_1"][j]["moisture"])
+                                t.append(data[i]["port_1"][j]["temperature"])
+                                h.append(data[i]["port_1"][j]["moisture"])
                         sens = list(data[i]["sens"].values())
                         li = sens[0:3]
                         li.append(pd.to_datetime(sens[3] + ".2025", format="%H:%M:%S %d.%m.%Y"))
@@ -77,23 +87,24 @@ def append_data(data: list, meteo_path: str, ugv_path: str):
                         li.extend(h)
                         ugv.loc[len(ugv)] = li
                         u_new += 1
-                except:
-                    print('ops')
+                except Exception as e:
                     print(data[i])
-                    break
             if (
                 data[i]["sens"]["id_s"] == "5"
                 or data[i]["sens"]["id_s"] == "7"
                 or data[i]["sens"]["id_s"] == "10"
             ):
-                if "meteo" in data[i] and "soil" in data[i]:
-                    sens = list(data[i]["sens"].values())
-                    li = sens[0:3]
-                    li.append(pd.to_datetime(sens[3] + ".2025", format="%H:%M:%S %d.%m.%Y"))
-                    li.extend(data[i]["meteo"].values())
-                    li.extend(data[i]["soil"].values())
-                    meteo.loc[len(meteo)] = li
-                    m_new += 1
+                try:
+                    if "meteo" in data[i] and "soil" in data[i]:
+                        sens = list(data[i]["sens"].values())
+                        li = sens[0:3]
+                        li.append(pd.to_datetime(sens[3] + ".2025", format="%H:%M:%S %d.%m.%Y"))
+                        li.extend(data[i]["meteo"].values())
+                        li.extend(data[i]["soil"].values())
+                        meteo.loc[len(meteo)] = li
+                        m_new += 1
+                except Exception as e:
+                    print(data[i])
     except Exception as e:
         print("Полный traceback:")
         traceback.print_exc()

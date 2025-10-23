@@ -95,7 +95,7 @@ method = "Визуальный осмотр, микроскопия, PCR"
 [Anthracnose.param]
 temp_air = { min = 25, max = 30 }
 hum_air = { min = 90, max = 100 }
-time = { min = 12, max = 24 }       # hours
+time = { min = 12 }       # hours
 dew_point = { min = 18, max = 100 }
 # rainfall = { min = 2 }  # mm/day
 # ph = { min = 5.5, max = 7.0 }
@@ -188,7 +188,7 @@ method = "Метеостанции, термометры, визуальный �
 
 [Frost.param]
 temp_air = { min = -100, max = 0 }
-dew_point = { min = -100, max = 0 }
+# dew_point = { min = -100, max = 0 }
 time={min=4}
 # wind_speed = { max = 2.0 }
 # soil_temp_10 = { min = -100, max = 5 }
