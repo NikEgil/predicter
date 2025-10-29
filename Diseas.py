@@ -30,6 +30,8 @@ class Diseas_work:
         self.time = {}
         self.valid = {}
         self.prob = {}
+        self.sens={}
+        self.prob_sens={}
         if file!=None:
             self._add_diseas_toml(file, coef)
 
@@ -156,7 +158,7 @@ class Diseas_work:
             valid['prob']=0
         return valid
 
-    def check_time(self, data:pd.DataFrame, time="last_hour"):
+    def check_all_disease_for_one_sens(self, data:pd.DataFrame, time="last_hour"):
         """
         Анализирует данные за указанный временной интервал и обновляет внутренние
         атрибуты класса: вероятности, флаги наличия заболевания и временные ряды.
@@ -186,4 +188,43 @@ class Diseas_work:
             self.prob_last[d_name]=self.valid[d_name]['prob'].iloc[-1]
             self.diseas_check[d_name]=self.valid[d_name]['prob'].any()
             self.prob[d_name]=self.valid[d_name].loc[:,['datetime','prob']]
+            # print(' ',self.current[d_name])
+
+    def check_one_disease_for_all_sens(self, data:pd.DataFrame, disease='',id_sens=[], time="last_hour"):
+        """
+        Анализирует данные за указанный временной интервал и обновляет внутренние
+        атрибуты класса: вероятности, флаги наличия заболевания и временные ряды.
+
+        Параметры:
+        ----------
+        data : pandas.DataFrame
+            Входные данные с обязательной колонкой 'datetime'.
+        time : str или int, по умолчанию "last_hour"
+            Временной интервал анализа:
+            - "last_hour": последний час;
+            - "all": все данные;
+            - int: последние N часов.
+        """
+        if time == "last_hour":
+            time_last = data["datetime"].max()- pd.Timedelta(hours=1)
+        elif time == "all":
+            time_last = data["datetime"].min()
+        else:
+            time_last = data["datetime"].max() - pd.Timedelta(hours=time)
+        data_last = data[data["datetime"] >= time_last]
+        if len(id_sens)==0:
+            id_sens=data['sensor_id'].unique()
+        if disease=='':
+            disease=self.names[0]
+        self.sens=id_sens
+        for sens in self.sens:
+            # print("check ", disease,sens)
+            sdata=data_last[data_last['sensor_id']==sens]
+            self.valid[sens] = self._compair_values(sdata, disease)
+            self.prob[sens]=self.valid[sens].loc[:,['datetime','prob']]
+
+
+            self.prob_last[sens]=self.valid[sens]['prob'].iloc[-1]
+            self.diseas_check[sens]=self.valid[sens]['prob'].any()
+            # self.prob[d_name]=self.valid[d_name].loc[:,['datetime','prob']]
             # print(' ',self.current[d_name])
