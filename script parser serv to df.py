@@ -5,7 +5,6 @@ from urllib.parse import urlencode, urlparse
 import requests
 import traceback
 
-
 def read_json_lines(filename):
     data = []
     try:
@@ -25,7 +24,6 @@ def read_json_lines(filename):
     except Exception as e:
         print(f"Произошла ошибка при чтении файла: {e}")
     return data
-
 
 def restore_series(observed):
     restored = []
@@ -54,8 +52,6 @@ def remove_duplicates(nested_list):
         if element not in unique_list:  # Проверяем каждый элемент
             unique_list.append(element)  # Добавляем, если элемент уникален
     return unique_list
-
-
 
 def append_data(data: list, meteo_path: str, ugv_path: str):
     while True:
@@ -132,10 +128,8 @@ def append_data(data: list, meteo_path: str, ugv_path: str):
 def get_jsons(date):
     base_url = "http://93.183.71.44/agro/api/v1/device-initial-list"
     params = {"from_datetime": date}
-
     # Полный URL с параметрами
     url = f"{base_url}?{urlencode(params)}"
-
     print("Отправка запроса на:", url)
     try:
         response = requests.get(url, timeout=10)
@@ -149,7 +143,6 @@ def get_jsons(date):
             else:
                 return False
         else:
-
             print(f"Ошибка: {response.status_code}")
             print(response.text)
             return False
@@ -157,10 +150,8 @@ def get_jsons(date):
     except requests.exceptions.RequestException as e:
         print("Ошибка при выполнении запроса:", e)
 
-
 meteo_path = "meteo.feather"
 ugv_path = "ugv.feather"
-
 
 while True:
     try:
@@ -219,7 +210,6 @@ while True:
         ugv.to_feather(ugv_path)
         meteo.to_feather(meteo_path)
         print("файлы созданы")
-
 
     except Exception as e:
         print("Произошла ошибка:")

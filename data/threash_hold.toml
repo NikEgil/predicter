@@ -1,0 +1,36 @@
+[temp_air.param]
+temp_air = { min = -10, max = 40 }
+time={min=200000}
+
+[hum_air.param]
+hum_air = { min = 0, max = 100 }
+time={min=200000}
+
+[pressure_hpa.param]
+pressure_hpa = { min = 950, max = 1050 }
+time={min=200000}
+
+[pressure_mmhg.param]
+pressure_mmhg = { min = 740, max = 760 }
+time={min=200000}
+
+[wind_speed.param]
+wind_speed = { min = 0, max = 5 }
+time={min=200000}
+
+
+[uv_index.param]
+uv_index = { min = 0, max = 10 }
+time={min=200000}
+
+[illuminance.param]
+illuminance = { min = 0, max = 9000 }
+time={min=200000}
+
+[temp_soil.param]
+temp_soil = { min = -10, max = 40 }
+time={min=200000}
+
+[hum_soil.param]
+hum_soil = { min = 0, max = 100 }
+time={min=200000}
